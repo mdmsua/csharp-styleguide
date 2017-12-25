@@ -1,8 +1,10 @@
 language: csharp
 mono: latest
 script:
-  - version=$(grep -o -m 1 "[0-9]\+.[0-9]\+.[0-9]\+" CHANGELOG.md)
-  - echo $version
-  - sed -e 's/#.#.#/'${version}'/g' -i CSharp.Styleguide.targets
-  - cat CSharp.Styleguide.targets
-  - nuget pack CSharp.Styleguide.nuspec -Version $version
+- VERSION=$(grep -o -m 1 "[0-9]\+.[0-9]\+.[0-9]\+" CHANGELOG.md)
+- sed -e 's/#.#.#/'${VERSION}'/g' -i CSharp.Styleguide.targets
+- nuget pack CSharp.Styleguide.nuspec -Version $VERSION
+- if [ "$TRAVIS_BRANCH" = "master" ]; then nuget push CSharp.Styleguide.$VERSION.nupkg -NonInteractive -Source https://api.nuget.org/v3/index.json -ApiKey $API_KEY; fi
+env:
+  global:
+    secure: Jm6rDzPNtw9rlYt3U8Otm4YUhOCe1EvIdO2OqR3rT48/K23KZ9uGZGxlJ2hMv+X1/KKmFA2KytfbZxpQ/gv/JRxIP4odsz7usE/A/a62DuEqVLwr97wdLx8flWsbcZwYkFXU/7ksiVVm65hSIsVsPIlYAtyBbd5TFWUe2T1PKL7KWJO3OEDLN1zD+Dp1ynoPoXIxoBawA4zusmMcAzYC6CrC5XC0byvo3WYY9fmM1Av35c/tP69lYHBVe4z27ZODGEFpngq/GDWnSRWpsz+d20JeIJ7155wAuSrl7Eo8npJnbZw1a+dPHDb4t51s1IQzSHdESDlZa4vCIrrfcE0iHTFDmNTbBgPrRrdwtDfOJFBIlWHlVX4UQvU+l58FcCrOBLO9IWOY23w/ubhBf1vpS/kRiDZ90MyE0/9LooS/x7R7SI7MTjoEyPb+/BdzZbz1C8nVNUPaaLLm5YRUfnnpUnOV0NUXV4AWoOenYw7a57CBBnleQMk8h7eEKifM31bQcsAlt7GlnkfN410OXU0oqeRROZWRQrAvnY7ygKEJPfY0FKR8A/3YhS9hfhRnSxLKfN3VKtZpYJpU2PlBQfBBpr2DsFFchamCdwFX3iGfKgUJuoRHcL260taKx0OlPfa7tUPVUG1reRctlP2hT4o0uFgRqA/Ylm7I+t0EOfFCUAw=
