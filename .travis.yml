@@ -1,0 +1,8 @@
+language: csharp
+mono: latest
+script:
+  - version=$(grep -o -m 1 "[0-9]\+.[0-9]\+.[0-9]\+" CHANGELOG.md)
+  - echo $version
+  - sed -e 's/#.#.#/'${version}'/g' -i CSharp.Styleguide.targets
+  - cat CSharp.Styleguide.targets
+  - nuget pack CSharp.Styleguide.nuspec -Version $version
