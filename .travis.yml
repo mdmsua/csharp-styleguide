@@ -1,10 +1,18 @@
 language: csharp
 mono: latest
 script:
-- VERSION=$(grep -o -m 1 "[0-9]\+.[0-9]\+.[0-9]\+" CHANGELOG.md)
-- sed -e 's/#.#.#/'${VERSION}'/g' -i CSharp.Styleguide.targets
-- nuget pack CSharp.Styleguide.nuspec -Version $VERSION
-- if [ "$TRAVIS_BRANCH" = "master" ]; then nuget push -NonInteractive -Source https://api.nuget.org/v3/index.json -ApiKey $API_KEY CSharp.Styleguide.$VERSION.nupkg; fi
+  - VERSION=$(grep -o -m 1 "[0-9]\+.[0-9]\+.[0-9]\+" CHANGELOG.md)
+  - sed -e 's/#.#.#/'${VERSION}'/g' -i CSharp.Styleguide.targets
+  - nuget pack CSharp.Styleguide.nuspec -Version $VERSION
+before_deploy:
+  - curl https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -o nuget.exe -s
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - mono nuget.exe push CSharp.Styleguide.$VERSION.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey $NUGET_API_KEY -NonInteractive
+  on:
+    branch: master
 env:
   global:
-    secure: Jm6rDzPNtw9rlYt3U8Otm4YUhOCe1EvIdO2OqR3rT48/K23KZ9uGZGxlJ2hMv+X1/KKmFA2KytfbZxpQ/gv/JRxIP4odsz7usE/A/a62DuEqVLwr97wdLx8flWsbcZwYkFXU/7ksiVVm65hSIsVsPIlYAtyBbd5TFWUe2T1PKL7KWJO3OEDLN1zD+Dp1ynoPoXIxoBawA4zusmMcAzYC6CrC5XC0byvo3WYY9fmM1Av35c/tP69lYHBVe4z27ZODGEFpngq/GDWnSRWpsz+d20JeIJ7155wAuSrl7Eo8npJnbZw1a+dPHDb4t51s1IQzSHdESDlZa4vCIrrfcE0iHTFDmNTbBgPrRrdwtDfOJFBIlWHlVX4UQvU+l58FcCrOBLO9IWOY23w/ubhBf1vpS/kRiDZ90MyE0/9LooS/x7R7SI7MTjoEyPb+/BdzZbz1C8nVNUPaaLLm5YRUfnnpUnOV0NUXV4AWoOenYw7a57CBBnleQMk8h7eEKifM31bQcsAlt7GlnkfN410OXU0oqeRROZWRQrAvnY7ygKEJPfY0FKR8A/3YhS9hfhRnSxLKfN3VKtZpYJpU2PlBQfBBpr2DsFFchamCdwFX3iGfKgUJuoRHcL260taKx0OlPfa7tUPVUG1reRctlP2hT4o0uFgRqA/Ylm7I+t0EOfFCUAw=
+    secure: KI0XCo8+DuOUMBS86HrakZRY07BqxAjReDzAbEsCjBgeFJchCuEicT8itIp2nm99nFESchaP+usH5S1LoHDCES0Q8P8d2H/I81upmV5OTDqpu444mnisJFbfrHEpk9nNdsXbOJqIYqp+aDxcfuoibUpUZfVXXwZQ5V8mngHuiHZS5Rup2LmeKVJ9Z6ci62ZSFzxWK1lj1eZbGY5TVOs+XIyBzaL4qCXaBAQKbQ4UtSrb4ToE60pfKwXDI6yUOTHymBgk5RpzDJoxpfbkP03iPEitaV19Nh0/1Ax5h8xs+ronSdeJ8iuw2MSZTcgvxoeiB9GnrzBkSZHnIYmO7Im6ve8EVOGWKwgHasCDJ8Rj06G2VluDSSCVW5OR5vFQ45QfouXrfLsIka4ExeOW5+GgL5ZKIbf+ssOwdnCEJyyLY2BLKn4Ncf5fh/ddiRAVVwKxQquXLY4+Jaqn/PVm70C62tsJ/GzRXGv6qsmpuY/AjsZ3aeQq6BezqUwkaVePfzJYe39SX7a3GLO0nxle8DaNKZMU1m9LrPdVpIOojQpgWZuNAsa2Oq850Gn3h8Sw+I0T9D+gHVZxs1WU9BnNqmkVc3HuPiv0YuwUVetl23q8g4bHfrdKF9VfyAF9BJc/MPEOHQgq36VRgS8xjjaLGst9a7jRPWDQq7nLKXNECKsT3dM=
