@@ -11,6 +11,6 @@
   </metadata>
   <files>
     <file src="StyleCop.ruleset" target="" />
-    <file src="CSharp.Styleguide.targets" target="build" />
+    <file src="CSharp.Styleguide.props" target="build" />
   </files>
 </package>
