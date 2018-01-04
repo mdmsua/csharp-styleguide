@@ -2,7 +2,7 @@ language: csharp
 mono: latest
 script:
   - VERSION=$(grep -o -m 1 "[0-9]\+.[0-9]\+" CHANGELOG.md).$TRAVIS_BUILD_NUMBER
-  - sed -e 's/#.#.#/'${VERSION}'/g' -i CSharp.Styleguide.targets
+  - sed -e 's/#.#.#/'${VERSION}'/g' -i CSharp.Styleguide.props
   - nuget pack CSharp.Styleguide.nuspec -Version $VERSION
 before_deploy:
   - curl https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -o nuget.exe -s
