@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <SolutionDir Condition="'$(SolutionDir)'==''">$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))\</SolutionDir>
-    <CodeAnalysisRuleSet>$(SolutionDir)packages\CSharp.Styleguide.#.#.#\StyleCop.ruleset</CodeAnalysisRuleSet>
+    <PackageName>CSharp.Styleguide</PackageName>
+    <PackageVersion>#.#.#</PackageVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSetLocation Condition=" '$(NuGetPackageRoot)' != '' ">$(NuGetPackageRoot)$(PackageName)\$(PackageVersion)</CodeAnalysisRuleSetLocation>
+    <CodeAnalysisRuleSetLocation Condition=" '$(NUGET_PACKAGES)' != '' ">$(NUGET_PACKAGES)$(PackageName).$(PackageVersion)</CodeAnalysisRuleSetLocation>
+    <CodeAnalysisRuleSetLocation Condition=" '$(SolutionDir)' != '' ">$(SolutionDir)packages\$(PackageName).$(PackageVersion)</CodeAnalysisRuleSetLocation>
+    <CodeAnalysisRuleSetLocation Condition=" '$(CodeAnalysisRuleSetLocation)' == '' ">$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))\packages\$(PackageName).$(PackageVersion)</CodeAnalysisRuleSetLocation>
+  </PropertyGroup>
+  <PropertyGroup>
+      <CodeAnalysisRuleSet>$(CodeAnalysisRuleSetLocation)\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 </Project>
