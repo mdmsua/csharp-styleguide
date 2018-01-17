@@ -1,7 +1,7 @@
 language: csharp
 mono: latest
 script:
-  - VERSION=$(grep -o -m 1 "[0-9]\+.[0-9]\+" CHANGELOG.md).0
+  - VERSION=$(grep -o -m 1 "[0-9]\+.[0-9]\+" CHANGELOG.md).$PATCH
   - sed -e 's/#.#.#/'${VERSION}'/g' -i CSharp.Styleguide.props
   - nuget pack CSharp.Styleguide.nuspec -Version $VERSION
 before_deploy:
